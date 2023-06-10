@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/get-tree', [MembersController::class, 'getFamilyTree']);
+Route::get('/users/search', [MembersController::class, 'searchForUser']);
+Route::post('/get-relation', [MembersController::class, 'getRelation']);
+Route::get('/get-profile', [MembersController::class, 'getProfileData']);

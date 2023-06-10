@@ -30,27 +30,22 @@ WithBatchInserts
    {  // A B C D E F G H I J K   L   M   N   O   P   Q   R   S   T   U
       // 0 1 2 3 4 5 6 7 8 9 10  11  12  13  14  15  16  17  18  19  20
       $member = Member::create([
-      'member_id'=>$row[1], // B
-      'level'=>$row[2], // C
-      'first_name'=>$row[3], // D
-      'second_name'=>$row[4], // E
-      'third_name'=>$row[5], // F
-      'fourth_name'=>$row[6], // G
-      'family_name'=>$row[7], // H
-      'gender'=>$row[8], // I
-      'is_alive'=> $row[9] == 0 ? 0 : 1, // J
-      'parent_id'=>$row[10], // K
-      'mother_id'=>$row[11], // L
-      'siblings_order'=>$row[15] // P
-      ]);
-
-      Profile::create([
-      'member_id'=>$member->id,
-      'is_married' => $row[12], // M
-      'hasband_id' => $row[13], // N
-      'is_hasband_from_outside' => $row[16], // Q
-      'mobile' => $row[19], // T
-      'city' => $row[20], // U
+         'id'=>$row[1], // B the id is the same as member id
+         'level'=>$row[2], // C
+         'first_name'=>trim($row[3]) . ' ', // D
+         'second_name'=>$row[4] ? trim($row[4]) . ' ' : null, // E
+         'third_name'=>$row[5] ? trim($row[5]) . ' ' : null, // F
+         'fourth_name'=>$row[6] ? trim($row[6]) . ' ' : null, // G
+         'family_name'=>trim($row[7]), // H
+         'gender'=>$row[8], // I
+         'is_alive'=> $row[9] == 0 ? 0 : 1, // J
+         'parent_id'=>$row[10], // K
+         'mother_id'=>$row[11], // L
+         'siblings_order'=>$row[15], // P
+         'husband_id' => $row[13], // N
+         'is_husband_from_outside' => $row[16], // Q
+         'mobile' => $row[19], // T
+         'city' => $row[20], // U
       ]);
    }
 

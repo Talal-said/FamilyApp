@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/upload', function () {
+    return view('import');
 });
+
+Route::post('import', function (\Illuminate\Http\Request $request){
+   $file = $request->file;
+   $import = new \App\Imports\MembersImport();
+   $import->import($file);
+   return 'ok';
+})->name('import');
