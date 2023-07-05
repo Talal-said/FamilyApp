@@ -18,7 +18,13 @@ class MembersController extends Controller
    public function searchForUser(){
       $search_name = request()->query('name');
       $data = Member::selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname")
-      ->whereRaw("concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) like '%$search_name%'")->get();
+        ->whereRaw("concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) like '%$search_name%'")
+        ->where(function ($q){
+            return $q->whereNotNull('parent_id')
+                ->orWhere('id', 1);
+        })
+        ->get();
+
       $data->makeHidden(['attributes']);
       return response()->json(['data' => $data]);
    }
@@ -47,14 +53,17 @@ class MembersController extends Controller
 
    public function getProfileData(){
       $id = request()->query('id');
-      $member = Member::selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname, gender, is_alive, mobile, city, edu_degree, parent_id")
+      $member = Member::selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname,husband_id, gender, is_alive, mobile, city, edu_degree, parent_id")
       ->with(['wives' => function($q) use($id){
          $q->with(['wifeChildren' => function ($query) use($id){
             $query->where('parent_id', $id);
          }]);
-      }])
+      }, 'husband'])
       ->find($id);
       $member->siblings =  $member->siblings();
+    //   if($member->gender == 0){
+    //         $member->husbandData = $member->husband();
+    //   }
       return response()->json($member);
    }
 }

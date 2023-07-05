@@ -97,5 +97,10 @@ class Member extends Model
       return $parentIds;
    }
 
+   public function husband(){
+    return $this->belongsTo(Member::class, 'husband_id')
+        ->selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname, is_alive, gender, mobile, city, edu_degree");
+   }
+
 
 }
