@@ -17,7 +17,7 @@ class MembersController extends Controller
 
    public function searchForUser(){
       $search_name = request()->query('name');
-      $data = Member::selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname, level")
+      $data = Member::selectRaw("id, concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) as fullname, level, parent_id")
         ->whereRaw("concat(first_name, IFNULL(second_name, ''), IFNULL(third_name, ''), IFNULL(fourth_name, ''), family_name) like '%$search_name%'")
         ->where(function ($q){
             return $q->whereNotNull('parent_id')
